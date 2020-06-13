@@ -33,7 +33,8 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('12345-67890-09876-54321'));
+
 
 function auth(req, res, next) {
   console.log(req.headers);
@@ -49,7 +50,7 @@ function auth(req, res, next) {
   const user = auth[0];
   const pass = auth[1];
   if (user === 'admin' && pass === 'password') {
-    return next();  // authorized
+    return next(); // authorized
   } else {
     const err = new Error('You are not authenticated!');
     res.setHeader('WWW-Authenticate', 'Basic');
@@ -58,8 +59,8 @@ function auth(req, res, next) {
   }
 }
 
-
 app.use(auth);
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 
